@@ -15,7 +15,7 @@ function getOrderId(): Promise<number> {
 	return new Promise((resolve, reject) => setTimeout(() => resolve(40), 300))
 }
 
-function getOrderDetails(orderId: number): Promise<{ id, product }> {
+function getOrderDetails(orderId: number): Promise<{ id: number, product: string }> {
 	return new Promise((resolve, reject) => setTimeout(() => resolve({ id: 40, product: 'Enlatados' }), 300))
 }
 
@@ -23,7 +23,7 @@ function getShipping(product: string): Promise<string> {
 	return new Promise((resolve, reject) => setTimeout(() => resolve(`${product} will be shipped in two days.`), 300))
 }
 
-const crash: Error = () => { throw new Error("Do not") }
+const crash = (): Error => { throw new Error("Do not") }
 
 getOrderId()
 	.then((orderId) => {
@@ -45,5 +45,5 @@ getOrderId()
 
 // What to observe
 // We have a chain of the then(), one starts when the other finish.
-// The outputs of the previus then(), is the input in the next.
+// The outputs of the previous then(), is the input in the next.
 // When something crash, they jump to the crash event
