@@ -1,7 +1,7 @@
 
 // First test
 
-function fetchUser(id: number): Promise<string> { 
+function fetchUser(id: number): Promise<string> {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             if (id > 0) {
