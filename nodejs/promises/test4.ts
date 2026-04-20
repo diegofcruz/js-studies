@@ -9,29 +9,18 @@
 // 3. Log the total time it takes (use `Date.now()` before and after).
 // 4. Then, change `getB` to reject. Observe what happens to the whole `Promise.all`.
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 function getA() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('A')
-    }, 2000)
-  })
+  return new Promise((resolve, reject) => delay(2000).then(() => resolve('Result A')))
 }
 
 function getB() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject('B')
-    }, 4000)
-  })
+  return new Promise((resolve, reject) => delay(4000).then(() => reject('Result B')))
 }
 
 function getC() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('C')
-    }, 6000)
-  })
+  return new Promise((resolve, reject) => delay(6000).then(() => resolve('Result C')))
 }
 
 
