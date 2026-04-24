@@ -9,8 +9,7 @@
 // 3. Log which one wins.
 // 4. Then test the reject case: make the 100ms promise reject.
 
-const delay = (ms: number, value: string) => new Promise<string>(resolve => setTimeout(() => resolve(value), ms))
-
+import { delay, rejectAfter } from './utils.ts'
 
 console.log('Init ', Date.now())
 
@@ -18,11 +17,9 @@ Promise.race([delay(1000, 'A'), delay(2000, 'B'), delay(3000, 'C')])
   .then((result) => { console.log('Winner of the first race: ', result) })
   .catch((error) => { console.log('Error: ', error) })
 
-const rejectAfter = (ms: number, error: string) => new Promise<string>((_, reject) => { setTimeout(() => reject(error), ms) })
-
 console.log('Middle ', Date.now())
 
-Promise.race([delay(2000, 'A'), rejectAfter(999, 'B'), delay(3000, 'C')])
+Promise.race([delay(2000, 'A'), rejectAfter(1000, 'B'), delay(3000, 'C')])
   .then((result) => { console.log('Winner of the second race: ', result) })
   .catch((error) => { console.log('First to reject: ', error) })
 
