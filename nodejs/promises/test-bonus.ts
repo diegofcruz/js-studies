@@ -24,20 +24,30 @@
 //   .catch((err) => console.error("Gave up:", err.message));
 // ```
 
+const BUCKET_MAX = 10
+
 const leakBucket: Array<{
   attempt: number
   err: unknown
-  retainedPayload: string
+  // WeakRef permite que o GC colete o payload quando houver pressao de memoria.
+  retainedPayload: WeakRef<{ data: string }>
   fnRef: () => Promise<unknown>
 }> = []
 
 function retry<T>(fn: () => Promise<T>, times: number): Promise<T> {
   return fn().catch((err) => {
-    // Intencional: retemos dados grandes + referencias para impedir coleta de lixo.
+    // Estrategia 1 — WeakRef: o payload pode ser coletado pelo GC a qualquer momento.
+    const payload = new WeakRef({ data: 'x'.repeat(1_000_000) })
+
+    // Estrategia 2 — Cap: descarta a entrada mais antiga quando o bucket estiver cheio.
+    if (leakBucket.length >= BUCKET_MAX) {
+      leakBucket.shift()
+    }
+
     leakBucket.push({
       attempt,
       err,
-      retainedPayload: 'x'.repeat(1_000_000),
+      retainedPayload: payload,
       fnRef: fn as unknown as () => Promise<unknown>
     })
 
