@@ -7,6 +7,7 @@ All planned topics for this repository. Check off each topic as exercises are co
 ## Node.js Core
 
 - [x] Promises
+- [ ] Set & WeakSet (collections, uniqueness, iteration, weak references)
 - [ ] async/await & error handling
 - [ ] Event Emitter
 - [ ] Timers & microtask queue (event loop internals)
