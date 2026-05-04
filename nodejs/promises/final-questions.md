@@ -8,6 +8,10 @@ Use these questions to test your understanding after completing all exercises. A
 
 **1.** What are the three possible states of a Promise? Can a Promise transition from `fulfilled` back to `pending`?
 
+Pending, fullfilled or rejected.
+
+No
+
 **2.** What is the difference between these two `.catch()` placements? Does the second `.catch()` catch errors thrown inside `onSuccess`?
 
 ```ts
@@ -15,9 +19,16 @@ promise.then(onSuccess).catch(onError);
 promise.then(onSuccess, onError);
 ```
 
+The first line, when onSuccess fail, will execute the catch and dispatch the callback onError
+The second line, we are not treating the eventually error with the catch treatment
+
+In the second one, we don't treat the errors, the eventually errors will escape for the other item of the chain.
+
 **3.** If you call `resolve()` and then `reject()` inside the same Promise constructor, what happens? Why?
 
 **4.** What does `.finally()` receive as its argument? Can it change the resolved value or swallow a rejection?
+
+Finally doesn't receive anything and its can't change anything.
 
 **5.** Explain in your own words the difference between `Promise.all()` and `Promise.allSettled()`. When would you choose one over the other?
 
