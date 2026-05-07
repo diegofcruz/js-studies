@@ -49,6 +49,32 @@ How would you rewrite it to run them concurrently?
 
 **10.** What is the "forgotten `return`" mistake in Promise chains? What symptom does it produce at runtime?
 
+When you call an async operation inside a `.then()` callback but forget to `return` the resulting Promise, two things happen:
+
+1. **The chain doesn't wait for the inner async work** — it moves on immediately with `undefined` as the resolved value, so the next `.then()` receives `undefined` instead of the expected result.
+2. **Errors are silently lost** — if the forgotten inner Promise rejects, that rejection has no handler attached to it through the chain, becoming an unhandled rejection that doesn't propagate through `.catch()`.
+
+```ts
+fetchUser()
+  .then((user) => {
+    fetchProfile(user.id); // forgot to return!
+  })
+  .then((profile) => {
+    console.log(profile); // logs undefined — chain didn't wait
+  })
+  .catch((err) => {
+    // errors from fetchProfile never reach here
+  });
+```
+
+The fix is always to `return` any Promise created inside a `.then()`:
+
+```ts
+.then((user) => {
+  return fetchProfile(user.id); // chain now waits and errors propagate
+})
+```
+
 ---
 
 ## Code Prediction Questions
@@ -63,6 +89,14 @@ Promise.resolve().then(() => console.log("B"));
 console.log("C");
 ```
 
+A
+C
+B
+
+`console.log("A")` and `console.log("C")` are synchronous — they run immediately on the call stack in order. `Promise.resolve()` creates an already-resolved Promise, but `.then()` callbacks are **never called synchronously**, even when the Promise is already settled. The callback `() => console.log("B")` is scheduled as a **microtask**.
+
+After the current synchronous execution completes (call stack is empty), the JS engine drains the **microtask queue** before moving on to the next macrotask. So "B" prints last — not because the event loop deferred it like a `setTimeout`, but because microtasks always run after the current synchronous code and before any I/O or timer callbacks.
+
 **12.** What does `result` contain after this resolves?
 
 ```ts
@@ -72,6 +106,10 @@ const result = await Promise.all([
   Promise.resolve(3),
 ]);
 ```
+
+[1, 2, 3]
+
+Promise.all waits for everything be resolved, and return in the same order, whatever which solved first.
 
 **13.** What does `results` contain after this settles?
 
