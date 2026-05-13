@@ -8,7 +8,7 @@ Use these questions to test your understanding after completing all exercises. A
 
 **1.** What are the three possible states of a Promise? Can a Promise transition from `fulfilled` back to `pending`?
 
-Pending, fullfilled or rejected.
+Pending, fulfilled or rejected.
 
 No
 
@@ -26,11 +26,21 @@ In the second one, we don't treat the errors, the eventually errors will escape 
 
 **3.** If you call `resolve()` and then `reject()` inside the same Promise constructor, what happens? Why?
 
+After the resolve runs, the promise will be fulfilled.
+
+If you call resolve() and then reject() in the same Promise executer, only the first call counts. The Promise stays fulfilled, and the later reject() is ignored.
+
+This happens because a Promise can settle only once.
+
 **4.** What does `.finally()` receive as its argument? Can it change the resolved value or swallow a rejection?
 
 Finally doesn't receive anything and its can't change anything.
 
 **5.** Explain in your own words the difference between `Promise.all()` and `Promise.allSettled()`. When would you choose one over the other?
+
+Promise.all() - waits for all promises to fulfill, but if any promise rejects, the combined promise rejects immediately with that reason. Use it when all results are required for success.
+
+Promise.allSettled() - waits for every promise to settle and returns an array describing each outcome. Use it when you need to inspect all outcomes, even failures.
 
 **6.** `Promise.race()` and `Promise.any()` both react to the first settled Promise. What is the key distinction between them?
 
