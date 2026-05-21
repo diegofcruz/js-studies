@@ -15,22 +15,39 @@ type RequestState =
   | { status: "idle" }
   | { status: "loading" }
   | { status: "success"; data: string[] }
-  | { status: "error"; message: string }
+  | { status: "error"; message: string } // discriminator union, with the status field working as the discriminator
 
-  function assertNever(value: never): never {
-    throw new Error(`Unhandled state: ${JSON.stringify(value)}`)
-  }
+function assertNever(value: never): never {
+  throw new Error(`Unhandled state: ${JSON.stringify(value)}`)
+}
 
-function renderState(state: RequestState): string {
+// Version 1: no exhaustiveness check.
+// If a new state appears in the union, this function can silently return fallback text.
+function renderStateWithoutExhaustive(state: RequestState): string {
   switch (state.status) {
     case "idle":
-      return "Nothing started";
+      return "Nothing started"
     case "loading":
-      return "Loading...";
+      return "Loading..."
     case "success":
-      return `Loaded ${state.data.length} items.`;
+      return `Loaded ${state.data.length} items.`
+    default:
+      return "Unknown state"
+  }
+}
+
+// Version 2: with exhaustiveness check.
+// The default branch only accepts `never`, so missing a case becomes a compile-time error.
+function renderStateWithExhaustive(state: RequestState): string {
+  switch (state.status) {
+    case "idle":
+      return "Nothing started"
+    case "loading":
+      return "Loading..."
+    case "success":
+      return `Loaded ${state.data.length} items.`
     case "error":
-      return `Failed ${state.message}`;
+      return `Failed ${state.message}`
     default:
       return assertNever(state)
   }
@@ -40,13 +57,34 @@ const states: RequestState[] = [
   { status: "idle" },
   { status: "loading" },
   { status: "success", data: ["A", "B"] },
-  { status: "error", message: "Network down" },
-  // { status: "a" }
+  { status: "error", message: "Network down" }
 ]
 
 for (const state of states) {
-  console.log(renderState(state))
+  console.log("without exhaustive:", renderStateWithoutExhaustive(state))
+  console.log("with exhaustive:   ", renderStateWithExhaustive(state))
 }
+
+// Playground to see the `never` protection:
+type RequestStateV2 = RequestState | { status: "cancelled" }
+
+// Uncomment this function to see compile-time safety from `never`:
+
+// function renderStateWithExhaustiveV2(state: RequestStateV2): string {
+//   switch (state.status) {
+//     case "idle":
+//       return "Nothing started"
+//     case "loading":
+//       return "Loading..."
+//     case "success":
+//       return `Loaded ${state.data.length} items.`
+//     case "error":
+//       return `Failed ${state.message}`
+//     default:
+//       // Error here: `state` is not `never` because "cancelled" was not handled.
+//       return assertNever(state)
+//   }
+// }
 
 // What to observe
 // We can use discriminated unions to keep our types with a more strong typing
