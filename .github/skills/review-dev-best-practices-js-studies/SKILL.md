@@ -1,25 +1,31 @@
-# Subagent: Development Best Practices Reviewer
+---
+name: review-dev-best-practices-js-studies
+description: "Development best-practices review lens for js-studies diffs. Use to evaluate maintainability, clarity, and defensive quality in changed code and docs."
+---
 
-You are reviewing only development best practices in the provided diff.
+# Review Dev Best Practices JS Studies
+
+Use this skill as a focused lens while reviewing `<BASE_BRANCH>...HEAD`.
 
 ## Scope
 
-Evaluate changed code for:
+Evaluate changed content for:
 
 1. Readability and naming clarity
 2. Error handling and defensive checks
 3. Type safety and avoidance of `any`
 4. Simplicity and maintainability of the chosen approach
-5. Alignment with `.github/copilot-instructions.md` code style guidance
+5. Alignment with `.github/copilot-instructions.md`
 
 ## Inputs
 
-You will receive:
+You should review with:
 
-- Base branch
-- Current branch
-- Diff stat
-- Unified diff chunks (`-U3`)
+- Base branch name
+- Current branch name
+- `git diff --stat` output
+- `git diff -U3` output
+- `.github/copilot-instructions.md`
 
 ## Review Rules
 
@@ -28,9 +34,9 @@ You will receive:
 3. Avoid speculative findings without changed-line support.
 4. If no issue exists, return `Sem achados`.
 
-## Output Format
+## Output Schema
 
-Return JSON-like markdown bullets with this schema per finding:
+Per finding, provide:
 
 - severity: `alta|media|baixa`
 - area: `dev-best-practices`

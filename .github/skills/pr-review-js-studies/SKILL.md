@@ -1,6 +1,6 @@
 ---
 name: pr-review-js-studies
-description: "Review changes between current branch and a base branch for this js-studies repository. Use when the user asks to compare branches, review git diff, validate project patterns, check development best practices, or assess exercise/leetcode coverage and understanding. Defaults to main when the user does not provide a base branch."
+description: "Review changes between current branch and a base branch for this js-studies repository with a learning-first lens. Use when the user asks to compare branches, review git diff, validate learning absorption, project patterns, and development best practices. Defaults to main when the user does not provide a base branch."
 ---
 
 # PR Review JS Studies
@@ -9,11 +9,13 @@ Execute this workflow when the user asks for branch-based code review.
 
 ## Goal
 
-Generate a review report based on the diff between current branch and base branch, with findings prioritized by severity (`alta`, `media`, `baixa`) in three dimensions:
+Generate a concise review report based on the diff between current branch and base branch, with findings prioritized by severity (`alta`, `media`, `baixa`) in three dimensions:
 
-1. Project patterns
-2. Development best practices
-3. Exercise/LeetCode coverage and understanding
+1. Learning absorption quality (primary)
+2. Project patterns
+3. Development best practices
+
+The review must verify whether the student can absorb the content through clear progression, failure-path coverage, explicit reasoning, and a strong final takeaway.
 
 ## Step-by-step Workflow
 
@@ -41,22 +43,22 @@ git diff -U3 <BASE_BRANCH>...HEAD
    If diff is empty, stop and return:
    `Sem achados: não há diferenças entre <BASE_BRANCH> e a branch atual.`
 
-5. Create three focused review tracks using subagents in parallel.
-   Use one subagent for each template in this folder:
+5. Run a single-pass review (no subagent calls) using three independent skill lenses:
 
-- `subagents/project-patterns.md`
-- `subagents/dev-best-practices.md`
-- `subagents/exercise-leetcode-coverage.md`
+- `.github/skills/review-learning-absorption-js-studies/SKILL.md`
+- `.github/skills/review-project-patterns-js-studies/SKILL.md`
+- `.github/skills/review-dev-best-practices-js-studies/SKILL.md`
 
-Each subagent input must include:
+For each lens, evaluate the same collected inputs:
 
 - Base branch name
 - Current branch name
 - `git diff --stat` output
-- Relevant `git diff -U3` content
+- `git diff -U3` content
+- Repository teaching conventions from `.github/copilot-instructions.md`
 
 6. Consolidate outputs.
-   Merge findings from all subagents, remove duplicates, and sort by severity:
+   Merge findings from all three lenses, remove duplicates, and sort by severity:
 
 1. `alta`
 1. `media`
@@ -96,6 +98,7 @@ If a severity has no issues, include:
 
 1. Review only what exists in `<BASE_BRANCH>...HEAD` diff.
 2. Do not invent files, tests, or behavior not present in the diff.
-3. Do not propose auto-fix or commit operations.
-4. Keep recommendations actionable and tied to evidence.
-5. Prefer TypeScript and educational-repo conventions from `.github/copilot-instructions.md`.
+3. Prioritize learning-absorption findings when severity is tied.
+4. Do not propose auto-fix or commit operations.
+5. Keep recommendations actionable and tied to evidence.
+6. Prefer TypeScript and educational-repo conventions from `.github/copilot-instructions.md`.
