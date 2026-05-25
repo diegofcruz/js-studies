@@ -23,6 +23,14 @@ function getProp<T, K extends keyof T>(obj: T, key: K): T[K] {
   return obj[key]
 }
 
+function getPropAsString<T, K extends keyof T>(obj: T, key: K): string {
+  return String(obj[key])
+}
+
+function getPropAsLabel<T, K extends keyof T>(obj: T, key: K): string {
+  return `Valor da propriedade ${String(key)}: ${String(obj[key])}`
+}
+
 const user = {
   id: 1,
   name: "Ana",
@@ -35,7 +43,11 @@ console.log(firstItem(["10", 20, ""]));
 console.log(firstItem(["x", "y"]));
 console.log(getProp(user, "name"));
 console.log(getProp(user, "active"));
+console.log(getPropAsString(user, "name"));
+console.log(getPropAsString(user, "active"));
+console.log(getPropAsLabel(user, "id"));
 
 // What to observe
-// Generics preserve exact input-output relationships, unlike loose `unknown` or `any` patterns
-// Generic can be any name, but the conventional is T, K
+// getProp returns the original property type: string, boolean, number...
+// getPropAsString always returns string because it converts the value.
+// Generic can be any name, but the conventional is T, K.
