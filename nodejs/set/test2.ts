@@ -10,7 +10,7 @@
 // 2. Convert it back to an array using `Array.from()`.
 // 3. Convert it again using the spread operator.
 
-const letters = new Set<string>(["a", "b", "c", "b"])
+const letters = new Set<string | number>(["a", "b", "c", "b", 58])
 
 console.log(letters.size)
 console.log(Array.from(letters))
