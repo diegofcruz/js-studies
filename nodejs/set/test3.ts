@@ -11,10 +11,16 @@
 // 3. Try to delete `99` (not in set) and log the result.
 // 4. Clear the entire set and log `.size`.
 
-const nums = new Set<number>([10, 20, 30])
+const nums = new Set<number>([10, 20, 30, NaN, null, null])
 
 console.log(nums.delete(20))
 console.log(nums.delete(99))
+console.log(nums.delete(NaN))
+
+console.log(`Has null ${nums.has(null)}`)
+
+console.log(nums.delete(null))
+console.log(nums.delete(null))
 
 console.log([...nums])
 
