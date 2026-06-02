@@ -32,3 +32,53 @@ console.log(ws.has(objA))
 
 // What to observe
 // WeakSet dont have iteration
+
+// -------------------------------------------------------
+// Extra: practical example - potential leak with Set vs WeakSet
+// -------------------------------------------------------
+
+type Session = {
+	userId: number
+	payload: string
+}
+
+const processedWithSet = new Set<Session>()
+const processedWithWeakSet = new WeakSet<Session>()
+
+function simulateSetLeak(rounds: number): void {
+	for (let i = 0; i < rounds; i += 1) {
+		const session: Session = {
+			userId: i,
+			payload: `x`.repeat(1000),
+		}
+
+		processedWithSet.add(session)
+		// After this loop iteration ends, `session` loses local references,
+		// but Set keeps a strong reference, so entries accumulate.
+	}
+
+	console.log(`Set retained sessions:`, processedWithSet.size)
+}
+
+function simulateWeakSet(rounds: number): void {
+	for (let i = 0; i < rounds; i += 1) {
+		const session: Session = {
+			userId: i,
+			payload: `x`.repeat(1000),
+		}
+
+		processedWithWeakSet.add(session)
+		// WeakSet does not keep objects alive by itself.
+	}
+
+	// WeakSet has no size/iteration APIs exactly because entries can disappear
+	// at any GC cycle when nothing else references those objects.
+	console.log(`WeakSet has no .size and is not iterable (by design).`)
+}
+
+simulateSetLeak(10_000)
+simulateWeakSet(10_000)
+
+// Rule of thumb:
+// - Set: use when you need iteration/size and explicit lifecycle control.
+// - WeakSet: use to mark object identity without risking retention leaks.
