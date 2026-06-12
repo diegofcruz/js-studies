@@ -62,7 +62,9 @@ console.log(fullProduct.title);
 console.log(productNoMeta);
 console.log(stock);
 
-
+// What to observe
+// We can use the utility types to have a more flexible use of types
+// We can override some contract
 
 // --- Extra: practical variants (Create, Update, Persisted) ---
 
