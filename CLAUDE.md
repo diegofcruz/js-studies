@@ -52,6 +52,21 @@ Default tone for LeetCode: teacher-style, concrete, step-by-step, and deeper tha
 
 ---
 
+## Student Profile
+
+The student is learning TypeScript **from scratch** — no prior TypeScript experience. When explaining any TypeScript concept:
+
+- Never assume knowledge of type-system vocabulary. Define terms on first use.
+- Always separate the **compile-time layer** (types, TypeScript) from the **runtime layer** (JavaScript, Node.js).
+- Show the JavaScript problem first, then show how TypeScript solves it.
+- Use the Depth Protocol for every non-trivial concept: invariant → mental model → happy path → failure path → key insight.
+
+Reference files for this student:
+- `nodejs/typescript/BEFORE-YOU-START.md` — foundational mental models (types vs values, the lifecycle, how to read errors). Read before teaching any TypeScript exercise.
+- `nodejs/typescript/tsconfig.json` — project config for running exercises, including `experimentalDecorators`.
+
+---
+
 ## TypeScript-Specific Teaching Rules
 
 TypeScript is a major focus of this repository. When covering TypeScript topics, apply extra depth:
