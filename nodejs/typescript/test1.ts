@@ -1,19 +1,7 @@
 // ## Exercise 1 — Literal Types e Type Widening
 
-// **Goal:** Entender que `const` e `let` produzem tipos diferentes para o mesmo valor — e por que isso muda tudo que vem depois.
-
+// **Goal:** Understood `const` e `let` create diferent types.
 // **Concepts covered:** `literal types`, `type widening`, `as const`, `type inference`
-
-// **Por que isso importa antes de começar:**
-// Em JavaScript, `const x = "up"` e `let x = "up"` se comportam diferente quanto a reatribuição. TypeScript vai além: eles também têm **tipos diferentes**. `const` produz o tipo literal `"up"`. `let` produz o tipo genérico `string`. Essa diferença é o que torna discriminated unions (exercício 6) possíveis — sem literal types, TypeScript não consegue distinguir estados.
-
-// **Steps:**
-
-// 1. Declare a mesma string com `const` e com `let`. Passe o mouse sobre cada uma no editor e observe os tipos inferidos.
-// 2. Escreva uma função que aceita apenas `"up" | "down"` — não `string` qualquer.
-// 3. Tente passar a variável `let` para a função e observe o erro.
-// 4. Corrija usando anotação de tipo explícita e, depois, usando `as const`.
-// 5. Aplique `as const` a um objeto inteiro e compare os tipos com e sem ele.
 
 const greeting = "hello" // infer type: "hello" - just this value
 let message = "hello" // infer type: string - whatever string
