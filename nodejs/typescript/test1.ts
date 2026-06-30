@@ -1,6 +1,6 @@
 // ## Exercise 1 — Literal Types e Type Widening
 
-// **Goal:** Understood `const` e `let` create diferent types.
+// **Goal:** Understand `const` e `let` create different types.
 // **Concepts covered:** `literal types`, `type widening`, `as const`, `type inference`
 
 const greeting = "hello" // infer type: "hello" - just this value
