@@ -34,7 +34,7 @@ interface Dog extends Animal {
 
 type AnimalType = { name: string };
 type DogType = AnimalType & { bark(): void }
-// insertion: the same effect
+// intersection: the same effect
 
 const dog: Dog = { name: "Rex", bark: () => console.log('Au!') };
 const dogT: DogType = dog // the both approach have the same shape
@@ -54,6 +54,7 @@ type AB = A & B // x became never - we'll have an error when try to use
 // What to observe
 // interface and type have different uses and different behaviors
 // when we define two types with the same properties and different types and try make a new type, with intersection, TS allows it, but change the property to never
+// extends make a validation in the moment of declaration, & just combine the structure and make the conflicts turn never
 // Key insight
 // We need to use interface when the type can be extendable ofr other modules
 // We need to use type when we want to make conditional types, unions, or other thing that interface doesn't support
