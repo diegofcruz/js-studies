@@ -41,3 +41,19 @@ const dogT: DogType = dog // the both approach have the same shape
 
 dog.bark()
 
+type A = { x: string }
+type B = { x: number }
+type AB = A & B // x became never - we'll have an error when try to use
+
+// interface B2 extends A { // Error - we have conflict here
+//   x: number
+// }
+
+const typeAB: AB = { x: 25 } // We can't do it, because the x became never
+
+// What to observe
+// interface and type have different uses and different behaviors
+// when we define two types with the same properties and different types and try make a new type, with insertion, TS allows it, but change the property to never
+// Key insight
+// We need to use interface when the type can be extendable ofr other modules
+// We need to use type when we want to make conditional types, unions, or other thing that interface doesn't support
