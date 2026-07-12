@@ -16,7 +16,7 @@ console.log(user);
 
 // TYPE: Two declarations with the same name, we have an error
 type Product = { id: string }
-// type Product = { name: string }
+// type Product = { name: string } // on types, we don't have combination. Two types with the same name, we have duplicate declarations
 
 type Direction = "up" | "down" | "left" | "right" // on type, we have the union
 type Part<T> = [T, T] // tuple
@@ -49,11 +49,13 @@ type AB = A & B // x became never - we'll have an error when try to use
 //   x: number
 // }
 
-const typeAB: AB = { x: 25 } // We can't do it, because the x became never
+// const typeAB: AB = { x: 25 } // We can't do it, because the x became never
 
 // What to observe
 // interface and type have different uses and different behaviors
-// when we define two types with the same properties and different types and try make a new type, with insertion, TS allows it, but change the property to never
+// when we define two types with the same properties and different types and try make a new type, with intersection, TS allows it, but change the property to never
 // Key insight
 // We need to use interface when the type can be extendable ofr other modules
 // We need to use type when we want to make conditional types, unions, or other thing that interface doesn't support
+
+
